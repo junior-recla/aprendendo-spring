@@ -17,12 +17,14 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class AlunoService {
 
+    private final Boolean ATIVO = Boolean.TRUE;
+
     @Autowired
     private AlunoRepository alunoRepository;
 
     public List<AlunoDTO> list() {
         return alunoRepository
-                .findAllByAtivo(Boolean.TRUE)
+                .findAllByAtivo(ATIVO)
                 .stream()
                 .map(AlunoMapper::toDTO)
                 .collect(toList());
@@ -30,17 +32,31 @@ public class AlunoService {
 
     public Optional<AlunoDTO> getByIndex(Integer id) {
         return alunoRepository
-                .findByIdAndAtivo(id, Boolean.TRUE)
+                .findByIdAndAtivo(id, ATIVO)
                 .map(AlunoMapper::toDTO);
     }
 
     public Optional<AlunoDTO> cria(@NonNull AlunoDTO alunoDTO) {
-        return Optional.of(alunoRepository.save(toDomain(alunoDTO)))
+        return Optional
+                .of(alunoRepository.save(toDomain(alunoDTO)))
                 .map(AlunoMapper::toDTO);
     }
 
     @Transactional
-    public void delete(Integer id) {
-        alunoRepository.deleteLogicamente(id);
+    public boolean delete(Integer id) {
+        boolean existe = alunoExiste(id, ATIVO);
+        if (existe) alunoRepository.deleteLogicamente(id);
+        return existe;
     }
+
+    public boolean update(Integer id, @NonNull AlunoDTO alunoDTO) {
+        boolean existe = alunoExiste(id, ATIVO);
+        if (existe) cria(alunoDTO);
+        return existe;
+    }
+
+    private boolean alunoExiste(Integer id, Boolean ativo) {
+        return alunoRepository.existsByIdAndAtivo(id, ATIVO);
+    }
+
 }

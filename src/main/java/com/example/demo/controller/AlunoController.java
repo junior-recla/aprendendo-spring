@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import com.example.demo.model.dto.AlunoDTO;
 import com.example.demo.service.AlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,14 +42,18 @@ public class AlunoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable Integer id) {
-        try {
-            alunoService.delete(id);
-            return new ResponseEntity(HttpStatus.ACCEPTED);
-        } catch (EmptyResultDataAccessException e) {
-            System.err.println(home + "id: " + id + " não existe");
-            e.printStackTrace();
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
+        return alunoService.delete(id) ?
+                new ResponseEntity(HttpStatus.ACCEPTED) :
+                new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AlunoDTO> update(@PathVariable Integer id,
+                                           @RequestBody AlunoDTO alunoDTO) {
+        alunoDTO.setId(id);
+        return alunoService.update(id, alunoDTO) ?
+                new ResponseEntity(HttpStatus.ACCEPTED) :
+                new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
 }
