@@ -15,6 +15,8 @@ import java.util.List;
 public class AlunoController {
 
     public final static String home = "/aluno";
+    private final ResponseEntity ACCEPTED = new ResponseEntity(HttpStatus.ACCEPTED);
+    private final ResponseEntity NOT_FOUND = new ResponseEntity(HttpStatus.NOT_FOUND);
 
     @Autowired
     private AlunoService alunoService;
@@ -42,18 +44,14 @@ public class AlunoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable Integer id) {
-        return alunoService.delete(id) ?
-                new ResponseEntity(HttpStatus.ACCEPTED) :
-                new ResponseEntity(HttpStatus.NOT_FOUND);
+        return alunoService.delete(id) ? ACCEPTED : NOT_FOUND;
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<AlunoDTO> update(@PathVariable Integer id,
                                            @RequestBody AlunoDTO alunoDTO) {
         alunoDTO.setId(id);
-        return alunoService.update(id, alunoDTO) ?
-                new ResponseEntity(HttpStatus.ACCEPTED) :
-                new ResponseEntity(HttpStatus.NOT_FOUND);
+        return alunoService.update(id, alunoDTO) ? ACCEPTED : NOT_FOUND;
     }
 
 }
