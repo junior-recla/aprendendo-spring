@@ -55,7 +55,7 @@ public class ProgramaService {
         return programaExiste;
     }
 
-    public boolean update(Integer id, @NonNull ProgramaDTO programaDTO) {
+    public boolean update(Integer id, ProgramaDTO programaDTO) {
         boolean programaExiste = programaAtivoExiste(id, ATIVO);
         if (programaExiste) cria(programaDTO);
         return programaExiste;

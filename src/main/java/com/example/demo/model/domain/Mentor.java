@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +25,8 @@ public class Mentor {
 
     private String naturalidade;
 
-    private Boolean ativo;
+    @Column(nullable = false,  columnDefinition = "TINYINT(1) default 1")
+    private Boolean ativo = Boolean.TRUE;
 
 
 }
