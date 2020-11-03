@@ -2,44 +2,30 @@ package com.example.demo.model.mapper;
 
 import com.example.demo.model.domain.Aluno;
 import com.example.demo.model.dto.AlunoDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-public abstract class AlunoMapper {
+import java.util.Optional;
 
-    private final static Aluno domainEmpty =
-            new Aluno(-1,
-                    "Sem nome domain pois é null",
-                    "Sem classe domain pois é null",
-                    Boolean.FALSE
-            );
+@Mapper(componentModel = "spring")
+public interface AlunoMapper {
 
-    private final static AlunoDTO dtoEmpty =
-            new AlunoDTO(-1,
-                    "Sem nome DTO pois é null",
-                    "Sem classe DTO pois é null"
-            );
+    //AlunoMaaper INSTANCE = Mappers.getMapper(AlunoMaaper.class);
 
-    public static Aluno domainEmpty() {
-        return domainEmpty;
+    @Mapping(target = "programaID", ignore = true)
+    AlunoDTO toDTO(Aluno aluno);
+
+    @Mapping(target = "ativo", ignore = true)
+    @Mapping(target = "programa", ignore = true)
+    Aluno toDomain(AlunoDTO alunoDTO);
+
+    default AlunoDTO toDTOrelacionado(Aluno aluno) {
+        AlunoDTO alunoDTO = toDTO(aluno);
+
+        alunoDTO.setId(aluno.getId());
+        alunoDTO.setProgramaID(aluno.getPrograma().getId());
+
+        return alunoDTO;
     }
 
-    public static AlunoDTO DTOEmpty() {
-        return dtoEmpty;
-    }
-
-    public static AlunoDTO toDTO(Aluno aluno) {
-        return new AlunoDTO(
-                aluno.getId(),
-                aluno.getNome(),
-                aluno.getClasse()
-        );
-    }
-
-    public static Aluno toDomain(AlunoDTO alunoDTO) {
-        return new Aluno(
-                alunoDTO.getId(),
-                alunoDTO.getNome(),
-                alunoDTO.getClasse(),
-                true
-        );
-    }
 }

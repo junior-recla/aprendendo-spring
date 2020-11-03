@@ -4,6 +4,7 @@ import com.example.demo.model.domain.Programa;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +15,10 @@ public interface ProgramaRepository extends JpaRepository<Programa, Integer> {
 
     Optional<Programa> findByIdAndAtivo(Integer id, Boolean ativo);
 
+    @Transactional
     @Modifying
     @Query(value = "UPDATE Programa SET ativo = 0 WHERE id = ?1")
     void deleteLogicamente(Integer id);
+
+    boolean existsByIdAndAtivo(Integer id, Boolean ativo);
 }

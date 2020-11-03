@@ -3,6 +3,8 @@ package com.example.demo.model.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 /*
  * @Getter @Setter @NoArgsConstructor
@@ -24,7 +26,6 @@ import javax.persistence.*;
 @Entity
 public class Aluno {
     //usar LocalDate
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -33,8 +34,11 @@ public class Aluno {
 
     private String classe;
 
+    @ManyToOne
+    private Programa programa;
+
     @Column(nullable = false,  columnDefinition = "TINYINT(1) default 1")
-    private Boolean ativo;
+    private Boolean ativo = Boolean.TRUE;
 
 //    @ManyToOne(cascade=CascadeType.PERSIST)
 //    @JoinColumn(name = "id_mentor")

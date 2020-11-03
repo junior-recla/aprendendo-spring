@@ -1,21 +1,28 @@
 package com.example.demo.model.dto;
 
 import com.example.demo.model.domain.Programa;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import javax.persistence.Entity;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class ProgramaDTO {
 
-    private int id;
+    private Integer id;
 
+    @NotNull
+    @NotEmpty
     private String nome;
 
-    private int anoInicio;
+    @NotNull
+    private Integer anoInicio;
 
-    private int anoFim;
+    @NotNull
+    private Integer anoFim;
 
 }

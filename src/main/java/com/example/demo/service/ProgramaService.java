@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.model.domain.Programa;
 import com.example.demo.model.dto.ProgramaDTO;
 import com.example.demo.model.mapper.ProgramaMapper;
 import com.example.demo.repository.ProgramaRepository;
@@ -9,36 +10,55 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
-import static com.example.demo.model.mapper.ProgramaMapper.toDomain;
 import static java.util.stream.Collectors.toList;
 
 @Service
 public class ProgramaService {
-
     @Autowired
     private ProgramaRepository programaRepository;
+
+    @Autowired
+    private ProgramaMapper programaMapper;
+
+    private final Boolean ATIVO = Boolean.TRUE;
+
+    private final Function<Programa, ProgramaDTO> toProgramaDTO = (p) -> programaMapper.toDTO(p);
+
+    private boolean programaAtivoExiste(Integer id, Boolean ativo) {
+        return programaRepository.existsByIdAndAtivo(id, ATIVO);
+    }
 
     public List<ProgramaDTO> list() {
         return programaRepository
                 .findAllByAtivo(Boolean.TRUE)
                 .stream()
-                .map(ProgramaMapper::toDTO)
+                .map(toProgramaDTO)
                 .collect(toList());
     }
 
     public Optional<ProgramaDTO> getByIndex(Integer id) {
         return programaRepository
-                .findByIdAndAtivo(id, Boolean.TRUE)
-                .map(ProgramaMapper::toDTO);
+                .findByIdAndAtivo(id, ATIVO)
+                .map(toProgramaDTO);
     }
 
     public Optional<ProgramaDTO> cria(@NonNull ProgramaDTO programaDTO) {
-        return Optional.of(programaRepository.save(toDomain(programaDTO)))
-                .map(ProgramaMapper::toDTO);
+        return Optional.of(programaRepository.save(programaMapper.toDomain(programaDTO)))
+                .map(toProgramaDTO);
     }
 
-    public void delete(Integer id) {
-        programaRepository.deleteLogicamente(id);
+    public boolean delete(Integer id) {
+        boolean programaExiste = programaAtivoExiste(id, ATIVO);
+        if (programaExiste) programaRepository.deleteLogicamente(id);
+        return programaExiste;
     }
+
+    public boolean update(Integer id, @NonNull ProgramaDTO programaDTO) {
+        boolean programaExiste = programaAtivoExiste(id, ATIVO);
+        if (programaExiste) cria(programaDTO);
+        return programaExiste;
+    }
+
 }

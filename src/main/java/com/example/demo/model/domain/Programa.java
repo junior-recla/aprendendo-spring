@@ -1,28 +1,28 @@
 package com.example.demo.model.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = {"nome", "anoInicio", "anoFim", "ativo"})
+@ToString
 @Entity
 public class Programa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     private String nome;
 
-    private int anoInicio;
+    private Integer anoInicio;
 
-    private int anoFim;
+    private Integer anoFim;
 
     @Column(nullable = false, columnDefinition = "TINYINT(1) default 1")
-    private Boolean ativo;
+    private Boolean ativo = Boolean.TRUE;;
 
 }
