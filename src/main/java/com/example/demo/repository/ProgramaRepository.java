@@ -17,7 +17,10 @@ public interface ProgramaRepository extends JpaRepository<Programa, Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE Programa SET ativo = 0 WHERE id = ?1")
+    @Query(value =
+            "UPDATE programa p, aluno a " +
+            "SET p.ativo = 0, a.ativo = 0 " +
+            "WHERE p.id = ?1 AND a.programa_id = ?1", nativeQuery = true)
     void deleteLogicamente(Integer id);
 
     boolean existsByIdAndAtivo(Integer id, Boolean ativo);

@@ -22,7 +22,7 @@ public interface AlunoMapper {
     default AlunoDTO toDTOrelacionado(Aluno aluno) {
         AlunoDTO alunoDTO = toDTO(aluno);
 
-        alunoDTO.setId(aluno.getId());
+//        alunoDTO.setId(aluno.getId());
         alunoDTO.setProgramaID(aluno.getPrograma().getId());
 
         return alunoDTO;
