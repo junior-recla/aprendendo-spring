@@ -5,7 +5,6 @@ import com.example.demo.model.domain.Aluno;
 import com.example.demo.model.dto.AlunoDTO;
 import com.example.demo.model.mapper.AlunoMapper;
 import com.example.demo.repository.AlunoRepository;
-import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +28,7 @@ public class AlunoService {
 
     private final Boolean ATIVO = Boolean.TRUE;
 
-    private final Function<Aluno, AlunoDTO> toAlunoDTO = a -> alunoMapper.toDTOrelacionado(a);
+    private final Function<Aluno, AlunoDTO> toAlunoDTO = a -> alunoMapper.toDTORelacionado(a);
 
     private boolean alunoAtivoExiste(Integer id) {
         return alunoRepository.existsByIdAndAtivo(id, ATIVO);
@@ -49,7 +48,11 @@ public class AlunoService {
                 .map(toAlunoDTO);
     }
 
-    public Optional<AlunoDTO> cria(@NonNull AlunoDTO alunoDTO) {
+    public boolean getByPrgramaIndex(Integer id) {
+        return alunoRepository.existsByPrograma(id) != null;
+    }
+
+    public Optional<AlunoDTO> cria(AlunoDTO alunoDTO) {
         return alunoFactory
                 .fabricaDomain(alunoDTO)
                 .map(alunoRepository::save)
@@ -57,12 +60,13 @@ public class AlunoService {
     }
 
     public boolean delete(Integer id) {
+        //TODO ao apagar o aluno, apagar tmb as mentorias relacionadas
         boolean alunoExiste = alunoAtivoExiste(id);
         if (alunoExiste) alunoRepository.deleteLogicamente(id);
         return alunoExiste;
     }
 
-    public boolean update(Integer id, @NonNull AlunoDTO alunoDTO) {
+    public boolean update(Integer id, AlunoDTO alunoDTO) {
         boolean alunoExiste = alunoAtivoExiste(id);
         if (alunoExiste) cria(alunoDTO);
         return alunoExiste;

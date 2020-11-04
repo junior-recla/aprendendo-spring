@@ -54,6 +54,7 @@ public class MentorService {
     }
 
     public boolean delete(Integer id){
+        //TODO ao apagar o mentor, apagar tmb as mentorias relacionadas
         boolean mentorExiste = mentorAtivoExiste(id);
         if (mentorExiste) mentorRepository.deleteLogicamente(id);
         return mentorExiste;

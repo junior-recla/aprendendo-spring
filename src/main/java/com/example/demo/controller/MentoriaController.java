@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.dto.AlunoDTO;
-import com.example.demo.service.AlunoService;
+import com.example.demo.model.dto.MentoriaDTO;
+import com.example.demo.service.MentoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,48 +19,48 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(AlunoController.HOME)
-public class AlunoController {
+@RequestMapping(MentoriaController.HOME)
+public class MentoriaController {
 
-    public final static String HOME = "/aluno";
+    public final static String HOME = "/mentoria";
 
     private final ResponseEntity<Boolean> ACCEPTED = new ResponseEntity<Boolean>(HttpStatus.ACCEPTED);
     private final ResponseEntity<Boolean> NOT_FOUND = new ResponseEntity<Boolean>(HttpStatus.NOT_FOUND);
 
     @Autowired
-    private AlunoService alunoService;
+    private MentoriaService mentoriaService;
 
     @GetMapping
-    public ResponseEntity<List<AlunoDTO>> list() {
-        return new ResponseEntity<List<AlunoDTO>>(alunoService.list(), HttpStatus.ACCEPTED);
+    public ResponseEntity<List<MentoriaDTO>> list() {
+        return new ResponseEntity<List<MentoriaDTO>>(mentoriaService.list(), HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AlunoDTO> get(@PathVariable Integer id) {
-        return alunoService
+    public ResponseEntity<MentoriaDTO> get(@PathVariable Integer id) {
+        return mentoriaService
                 .getByIndex(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(ResponseEntity.notFound()::build);
     }
 
     @PostMapping
-    public ResponseEntity<AlunoDTO> cria(@RequestBody @Validated AlunoDTO alunoDTO) {
-        return alunoService
-                .cria(alunoDTO)
+    public ResponseEntity<MentoriaDTO> cria(@RequestBody @Validated MentoriaDTO mentoriaDTO) {
+        return mentoriaService
+                .cria(mentoriaDTO)
                 .map(a -> ResponseEntity.created(URI.create(HOME + "/" + a.getId())).body(a))
                 .orElseGet(ResponseEntity.badRequest()::build);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable Integer id) {
-        return alunoService.delete(id) ? ACCEPTED : NOT_FOUND;
+        return mentoriaService.delete(id) ? ACCEPTED : NOT_FOUND;
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Boolean> update(@PathVariable Integer id,
-                                          @RequestBody @Validated AlunoDTO alunoDTO) {
-        alunoDTO.setId(id);
-        return alunoService.update(id, alunoDTO) ? ACCEPTED : NOT_FOUND;
+                                          @RequestBody @Validated MentoriaDTO mentoriaDTO) {
+        mentoriaDTO.setId(id);
+        return mentoriaService.update(id, mentoriaDTO) ? ACCEPTED : NOT_FOUND;
     }
 
 }

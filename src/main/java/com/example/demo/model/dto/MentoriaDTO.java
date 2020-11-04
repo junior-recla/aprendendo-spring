@@ -5,33 +5,25 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.validation.constraints.PositiveOrZero;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class AlunoDTO {
+public class MentoriaDTO {
 
     @PositiveOrZero
     private Integer id;
 
     @NotNull
-    @NotEmpty
-    @NotBlank
-    private String nome;
-
-    @NotNull
-    @NotEmpty
-    @NotBlank
-    private String classe;
+    @Positive
+    private Integer alunoId;
 
     @NotNull
     @Positive
-    private Integer programaId;
+    private Integer mentorId;
 
 }

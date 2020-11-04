@@ -22,12 +22,19 @@ public class ProgramaService {
     @Autowired
     private ProgramaMapper programaMapper;
 
+    @Autowired
+    private AlunoService alunoService;
+
     private final Boolean ATIVO = Boolean.TRUE;
 
     private final Function<Programa, ProgramaDTO> toProgramaDTO = (p) -> programaMapper.toDTO(p);
 
     private boolean programaAtivoExiste(Integer id, Boolean ativo) {
         return programaRepository.existsByIdAndAtivo(id, ATIVO);
+    }
+
+    private boolean naoAhAlunoRelacionadoAoPrograma(Integer id){
+        return !alunoService.getByPrgramaIndex(id);
     }
 
     public List<ProgramaDTO> list() {
@@ -51,8 +58,15 @@ public class ProgramaService {
 
     public boolean delete(Integer id) {
         boolean programaExiste = programaAtivoExiste(id, ATIVO);
-        if (programaExiste) programaRepository.deleteLogicamente(id);
-        return programaExiste;
+        boolean naoAhAlunoRelacionado = naoAhAlunoRelacionadoAoPrograma(id);
+
+        boolean possoDeletar = programaExiste && naoAhAlunoRelacionado;
+
+        if (possoDeletar) {
+            programaRepository.deleteLogicamente(id);
+        }
+        //TODO lançar exception informando q há algum aluno relacionado ao programa, ou apagar em cascata e não lançar exception
+        return possoDeletar;
     }
 
     public boolean update(Integer id, ProgramaDTO programaDTO) {

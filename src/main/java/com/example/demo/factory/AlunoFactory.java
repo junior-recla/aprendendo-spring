@@ -31,7 +31,7 @@ public class AlunoFactory {
 
     public Optional<Aluno> fabricaDomain(AlunoDTO alunoDTO) {
 
-        Integer programaID = alunoDTO.getProgramaID();
+        Integer programaID = alunoDTO.getProgramaId();
 
         if (programaNaoExiste(programaID)) {
             return Optional.empty();

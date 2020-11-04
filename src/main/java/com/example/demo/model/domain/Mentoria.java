@@ -4,33 +4,32 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
+import javax.persistence.ManyToOne;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"nome", "anoInicio", "anoFim", "ativo"})
 @ToString
 @Entity
-public class Programa {
+public class Mentoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String nome;
+    @ManyToOne
+    private Aluno aluno;
 
-    private Integer anoInicio;
-
-    private Integer anoFim;
+    @ManyToOne
+    private Mentor mentor;
 
     @Column(nullable = false, columnDefinition = "TINYINT(1) default 1")
-    private Boolean ativo = Boolean.TRUE;;
-
+    private Boolean ativo = Boolean.TRUE;
 }

@@ -1,19 +1,20 @@
 package com.example.demo.model.domain;
 
-import com.example.demo.model.dto.MentorDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude={"nome", "naturalidade"})
+@EqualsAndHashCode(exclude = {"nome", "naturalidade"})
 @Entity
 public class Mentor {
 
@@ -25,7 +26,7 @@ public class Mentor {
 
     private String naturalidade;
 
-    @Column(nullable = false,  columnDefinition = "TINYINT(1) default 1")
+    @Column(nullable = false, columnDefinition = "TINYINT(1) default 1")
     private Boolean ativo = Boolean.TRUE;
 
 
