@@ -1,42 +1,35 @@
 package com.example.demo.model.mapper;
 
+import com.example.demo.model.domain.Aluno;
 import com.example.demo.model.domain.Materia;
 import com.example.demo.model.dto.MateriaDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-public abstract class MateriaMapper {
+import java.util.stream.Collectors;
 
-    private final static Materia materiaEmpty =
-            new Materia(-1,
-                    "Matéria sem nome pois é Null",
-                    Boolean.FALSE
-            );
+import static java.util.stream.Collectors.toMap;
 
-    private final static MateriaDTO materiaDTOEmpty =
-            new MateriaDTO(-1,
-                    "Matéria sem nome pois é Null"
-            );
+@Mapper(componentModel = "spring")
+public interface MateriaMapper {
 
-    public static Materia domainEmpty() {
-        return materiaEmpty;
-    }
+    @Mapping(target = "alunos", ignore = true)
+    MateriaDTO toDTO(Materia materia);
 
-    public static MateriaDTO DTOEmpty() {
-        return materiaDTOEmpty;
-    }
+    @Mapping(target = "alunos", ignore = true)
+    Materia toDomain(MateriaDTO materiaDTO);
 
-    public static MateriaDTO toDTO(Materia materia) {
-        return new MateriaDTO(
-                materia.getId(),
-                materia.getNome()
-        );
-    }
+    default MateriaDTO toDTORelacionado(Materia materia){
+        MateriaDTO materiaDTO = toDTO(materia);
 
-    public static Materia toDomain(MateriaDTO materiaDTO) {
-        return new Materia(
-                materiaDTO.getId(),
-                materiaDTO.getNome(),
-                Boolean.TRUE
-        );
+        materiaDTO
+                .setAlunos(materia
+                        .getAlunos()
+                        .stream()
+                        .collect(toMap( Aluno::getId, Aluno::getNome))
+                );
+
+        return materiaDTO;
     }
 
 }

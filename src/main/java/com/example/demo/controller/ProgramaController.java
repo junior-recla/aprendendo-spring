@@ -25,7 +25,7 @@ public class ProgramaController {
 
     @GetMapping
     public ResponseEntity<List<ProgramaDTO>> list() {
-        return new ResponseEntity<List<ProgramaDTO>>(programaService.list(), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(programaService.list(), HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/{id}")

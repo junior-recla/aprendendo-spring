@@ -8,13 +8,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface AlunoRepository extends JpaRepository<Aluno, Integer> {
 
     List<Aluno> findAllByAtivo(Boolean ativo);
 
+    @Transactional(readOnly = true)
+    @Query(value = "SELECT aluno FROM Aluno aluno WHERE ativo = 1")
+    Set<Aluno> findSetAllByAtivo(Boolean ativo);
+
     Optional<Aluno> findByIdAndAtivo(Integer id, Boolean ativo);
 
+    @Transactional(readOnly = true)
     @Query(value = "SELECT ativo FROM aluno WHERE programa_id = ?1 AND ativo = 1 limit 1", nativeQuery = true)
     Boolean existsByPrograma(Integer programaId);
 

@@ -1,17 +1,20 @@
 package com.example.demo.service;
 
+import com.example.demo.factory.MateriaFactory;
+import com.example.demo.model.domain.Materia;
 import com.example.demo.model.dto.MateriaDTO;
 import com.example.demo.model.mapper.MateriaMapper;
 import com.example.demo.repository.MateriaRepository;
-import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
-import static com.example.demo.model.mapper.MateriaMapper.toDomain;
+import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
+
 
 @Service
 public class MateriaService {
@@ -19,26 +22,54 @@ public class MateriaService {
     @Autowired
     private MateriaRepository materiaRepository;
 
+    @Autowired
+    private MateriaMapper materiaMapper;
+
+    @Autowired
+    private MateriaFactory materiaFactory;
+
+    private final Boolean ATIVO = Boolean.TRUE;
+
+    private final Function<Materia, MateriaDTO> toMateriaDTO = m -> materiaMapper.toDTORelacionado(m);
+
+    private boolean materiaAtivoExiste(Integer id) {
+        return materiaRepository.existsByIdAndAtivo(id, ATIVO);
+    }
+
     public List<MateriaDTO> list() {
-        return materiaRepository
-                .findAllByAtivo(Boolean.TRUE)
+        List<MateriaDTO> aux = materiaRepository
+                .findAllByAtivo(ATIVO)
                 .stream()
-                .map(MateriaMapper::toDTO)
+                .map(toMateriaDTO)
                 .collect(toList());
+
+        aux.sort(comparing(MateriaDTO::getId));
+
+        return aux;
     }
 
-    public Optional<MateriaDTO> getByIndex(int id) {
+    public Optional<MateriaDTO> getByIndex(Integer id) {
         return materiaRepository
-                .findById(id)
-                .map(MateriaMapper::toDTO);
+                .findByIdAndAtivo(id, ATIVO)
+                .map(toMateriaDTO);
     }
 
-    public Optional<MateriaDTO> cria(@NonNull MateriaDTO materiaDTO) {
-        return Optional.of(materiaRepository.save(toDomain(materiaDTO)))
-                .map(MateriaMapper::toDTO);
+    public Optional<MateriaDTO> cria(MateriaDTO materiaDTO) {
+        return materiaFactory
+                .fabricaDomain(materiaDTO)
+                .map(materiaRepository::save)
+                .map(toMateriaDTO);
     }
 
-    public void delete(int id) {
-        materiaRepository.deleteById(id);
+    public boolean delete(Integer id) {
+        boolean materiaExiste = materiaAtivoExiste(id);
+        if (materiaExiste) materiaRepository.deleteLogicamente(id);
+        return materiaExiste;
+    }
+
+    public boolean update(Integer id, MateriaDTO materiaDTO) {
+        boolean materiaExiste = materiaAtivoExiste(id);
+        if (materiaExiste) cria(materiaDTO);
+        return materiaExiste;
     }
 }

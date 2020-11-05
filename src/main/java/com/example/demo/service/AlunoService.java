@@ -53,10 +53,10 @@ public class AlunoService {
     }
 
     public Optional<AlunoDTO> cria(AlunoDTO alunoDTO) {
-        return alunoFactory
-                .fabricaDomain(alunoDTO)
-                .map(alunoRepository::save)
-                .map(toAlunoDTO);
+            return alunoFactory
+                    .fabricaDomain(alunoDTO)
+                    .map(alunoRepository::save)
+                    .map(toAlunoDTO);
     }
 
     public boolean delete(Integer id) {

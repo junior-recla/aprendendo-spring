@@ -32,7 +32,7 @@ public class MentoriaController {
 
     @GetMapping
     public ResponseEntity<List<MentoriaDTO>> list() {
-        return new ResponseEntity<List<MentoriaDTO>>(mentoriaService.list(), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(mentoriaService.list(), HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/{id}")
