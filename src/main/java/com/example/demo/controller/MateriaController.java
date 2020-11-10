@@ -47,8 +47,8 @@ public class MateriaController {
     public ResponseEntity<MateriaDTO> cria(@RequestBody @Validated MateriaDTO materiaDTO) {
         return materiaService
                 .cria(materiaDTO)
-                .map(a -> ResponseEntity.created(URI.create(HOME + "/" + a.getId())).body(a))
-                .orElseGet(() -> ResponseEntity.badRequest().build());
+                .map(m -> ResponseEntity.created(URI.create(HOME + "/" + m.getId())).body(m))
+                .orElseGet(ResponseEntity.badRequest()::build);
     }
 
     @DeleteMapping("/{id}")
@@ -62,4 +62,5 @@ public class MateriaController {
         materiaDTO.setId(id);
         return materiaService.update(id, materiaDTO) ? ACCEPTED : NOT_FOUND;
     }
+
 }

@@ -27,7 +27,7 @@ public class ProgramaService {
 
     private final Boolean ATIVO = Boolean.TRUE;
 
-    private final Function<Programa, ProgramaDTO> toProgramaDTO = (p) -> programaMapper.toDTO(p);
+    private final Function<Programa, ProgramaDTO> toProgramaDTO = p -> programaMapper.toDTO(p);
 
     private boolean programaAtivoExiste(Integer id, Boolean ativo) {
         return programaRepository.existsByIdAndAtivo(id, ATIVO);

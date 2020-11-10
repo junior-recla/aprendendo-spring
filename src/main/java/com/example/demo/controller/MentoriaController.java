@@ -47,7 +47,7 @@ public class MentoriaController {
     public ResponseEntity<MentoriaDTO> cria(@RequestBody @Validated MentoriaDTO mentoriaDTO) {
         return mentoriaService
                 .cria(mentoriaDTO)
-                .map(a -> ResponseEntity.created(URI.create(HOME + "/" + a.getId())).body(a))
+                .map(m -> ResponseEntity.created(URI.create(HOME + "/" + m.getId())).body(m))
                 .orElseGet(ResponseEntity.badRequest()::build);
     }
 

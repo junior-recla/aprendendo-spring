@@ -12,14 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-/*
- * @Getter @Setter @NoArgsConstructor
- * @ToString(exclude="classe")
- * @EqualsAndHashCode(exclude={"firstName", "lastName", "gender"})
- * @Data @AllArgsConstructor
- * */
-
 /*
  * @GeneratedValue(generator = "inc")
  * @GenericGenerator(name = "inc", strategy = "increment")
@@ -46,15 +38,9 @@ public class Aluno {
 
     @Column(nullable = false,  columnDefinition = "TINYINT(1) default 1")
     private Boolean ativo = Boolean.TRUE;
-
-//    @ManyToOne(cascade=CascadeType.PERSIST)
-//    @JoinColumn(name = "id_mentor")
-//    private Mentor mentor;
-//
+    
 //    @ManyToOne(cascade=CascadeType.PERSIST)
 //    @JoinColumn(name = "id_programa")
-
-//    private Programa programa;
 
 }
 

@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.exceptions.ResourceNotFoundException;
 import com.example.demo.factory.AlunoFactory;
 import com.example.demo.model.domain.Aluno;
 import com.example.demo.model.dto.AlunoDTO;
@@ -30,10 +31,6 @@ public class AlunoService {
 
     private final Function<Aluno, AlunoDTO> toAlunoDTO = a -> alunoMapper.toDTORelacionado(a);
 
-    private boolean alunoAtivoExiste(Integer id) {
-        return alunoRepository.existsByIdAndAtivo(id, ATIVO);
-    }
-
     public List<AlunoDTO> list() {
         return alunoRepository
                 .findAllByAtivo(ATIVO)
@@ -43,9 +40,14 @@ public class AlunoService {
     }
 
     public Optional<AlunoDTO> getByIndex(Integer id) {
-        return alunoRepository
-                .findByIdAndAtivo(id, ATIVO)
-                .map(toAlunoDTO);
+        boolean alunoExiste = alunoExiste(id);
+        if (alunoExiste) {
+            return alunoRepository
+                    .findByIdAndAtivo(id, ATIVO)
+                    .map(toAlunoDTO);
+        } else {
+            throw new ResourceNotFoundException("Não foi possível encontrar Aluno com a id: " + id );
+        }
     }
 
     public boolean getByPrgramaIndex(Integer id) {
@@ -53,23 +55,36 @@ public class AlunoService {
     }
 
     public Optional<AlunoDTO> cria(AlunoDTO alunoDTO) {
-            return alunoFactory
-                    .fabricaDomain(alunoDTO)
-                    .map(alunoRepository::save)
-                    .map(toAlunoDTO);
+        return alunoFactory
+                .fabricaDomain(alunoDTO)
+                .map(alunoRepository::save)
+                .map(toAlunoDTO);
     }
 
-    public boolean delete(Integer id) {
+    public AlunoDTO delete(Integer id) throws ResourceNotFoundException {
         //TODO ao apagar o aluno, apagar tmb as mentorias relacionadas
-        boolean alunoExiste = alunoAtivoExiste(id);
-        if (alunoExiste) alunoRepository.deleteLogicamente(id);
-        return alunoExiste;
+        AlunoDTO alunoDTOExcluido;
+        boolean alunoExiste = alunoExiste(id);
+        if (alunoExiste) {
+            alunoDTOExcluido = getByIndex(id).get();
+            alunoRepository.deleteLogicamente(id);
+            return alunoDTOExcluido;
+        } else {
+            throw new ResourceNotFoundException("Aluno id: " + id + " não existe! Nada foi apagado");
+        }
     }
 
-    public boolean update(Integer id, AlunoDTO alunoDTO) {
-        boolean alunoExiste = alunoAtivoExiste(id);
-        if (alunoExiste) cria(alunoDTO);
-        return alunoExiste;
+    public AlunoDTO update(Integer id, AlunoDTO alunoDTO) {
+        boolean alunoExiste = alunoExiste(id);
+        if (alunoExiste) {
+            return cria(alunoDTO).get();
+        } else {
+            throw new ResourceNotFoundException("Aluno id: " + id + " não existe! Nada foi alterado");
+        }
+    }
+
+    private boolean alunoExiste(Integer id) {
+        return alunoRepository.existsByIdAndAtivo(id, ATIVO);
     }
 
 }

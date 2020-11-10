@@ -6,7 +6,7 @@ import com.example.demo.model.dto.MateriaDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import java.util.stream.Collectors;
+import java.util.Map;
 
 import static java.util.stream.Collectors.toMap;
 
@@ -22,12 +22,13 @@ public interface MateriaMapper {
     default MateriaDTO toDTORelacionado(Materia materia){
         MateriaDTO materiaDTO = toDTO(materia);
 
-        materiaDTO
-                .setAlunos(materia
-                        .getAlunos()
-                        .stream()
-                        .collect(toMap( Aluno::getId, Aluno::getNome))
-                );
+        Map<Integer, String> alunos;
+        alunos = materia
+                .getAlunos()
+                .stream()
+                .collect(toMap( Aluno::getId, Aluno::getNome));
+
+        materiaDTO.setAlunos(alunos);
 
         return materiaDTO;
     }

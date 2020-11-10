@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toSet;
 
@@ -40,18 +39,14 @@ public class MateriaFactory {
 
         Set<Integer> keys = materiaDTO.getAlunos().keySet();
 
-        if (keys.isEmpty()) {
+        if (algumAlunoNaoExiste(keys) || keys.isEmpty()) {
             return Optional.empty();
         }
 
-        if (algumAlunoNaoExiste(keys)) {
-            return Optional.empty();
-        }
-
-        Set<Aluno> alunos = keys
+        Set<Aluno> alunos;
+        alunos = keys
                 .stream()
-                .map(key -> alunoRepository.findByIdAndAtivo(key, true))
-                .map(optionalAluno -> optionalAluno.get())
+                .map(key -> alunoRepository.findByIdAndAtivo(key, ATIVO).get())
                 .collect(toSet());
 
         Materia materia = materiaMapper.toDomain(materiaDTO);

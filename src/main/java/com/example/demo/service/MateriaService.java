@@ -37,15 +37,15 @@ public class MateriaService {
     }
 
     public List<MateriaDTO> list() {
-        List<MateriaDTO> aux = materiaRepository
+        List<MateriaDTO> materiasDTOList = materiaRepository
                 .findAllByAtivo(ATIVO)
                 .stream()
                 .map(toMateriaDTO)
                 .collect(toList());
 
-        aux.sort(comparing(MateriaDTO::getId));
+        materiasDTOList.sort(comparing(MateriaDTO::getId));
 
-        return aux;
+        return materiasDTOList;
     }
 
     public Optional<MateriaDTO> getByIndex(Integer id) {
