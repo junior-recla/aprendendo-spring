@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.exceptions.ResourceNotFoundException;
 import com.example.demo.model.dto.AlunoDTO;
 import com.example.demo.service.AlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
