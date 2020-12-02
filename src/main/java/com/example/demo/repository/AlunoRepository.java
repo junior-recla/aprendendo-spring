@@ -22,6 +22,7 @@ public interface AlunoRepository extends JpaRepository<Aluno, Integer> {
 
     @Transactional(readOnly = true)
     @Query(value = "SELECT ativo FROM aluno WHERE programa_id = ?1 AND ativo = 1 limit 1", nativeQuery = true)
+//    @Query(value = "SELECT ativo FROM Aluno a WHERE programa = :programaId AND ativo = 1")
     Boolean existsByPrograma(Integer programaId);
 
     @Transactional

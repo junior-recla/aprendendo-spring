@@ -1,11 +1,5 @@
 package com.example.demo.model.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import lombok.EqualsAndHashCode;
-
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.Entity;
@@ -17,11 +11,6 @@ import javax.persistence.Id;
  * @GenericGenerator(name = "inc", strategy = "increment")
  * */
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode(exclude = {"nome", "classe", "ativo"})
-@ToString
 @Entity
 public class Aluno {
     //usar LocalDate
@@ -42,6 +31,45 @@ public class Aluno {
 //    @ManyToOne(cascade=CascadeType.PERSIST)
 //    @JoinColumn(name = "id_programa")
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getClasse() {
+        return classe;
+    }
+
+    public void setClasse(String classe) {
+        this.classe = classe;
+    }
+
+    public Programa getPrograma() {
+        return programa;
+    }
+
+    public void setPrograma(Programa programa) {
+        this.programa = programa;
+    }
+
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
 }
 
 /*

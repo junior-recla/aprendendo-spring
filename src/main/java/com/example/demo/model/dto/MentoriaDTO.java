@@ -1,18 +1,9 @@
 package com.example.demo.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
 public class MentoriaDTO {
 
     @PositiveOrZero
@@ -26,4 +17,27 @@ public class MentoriaDTO {
     @Positive
     private Integer mentorId;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getAlunoId() {
+        return alunoId;
+    }
+
+    public void setAlunoId(Integer alunoId) {
+        this.alunoId = alunoId;
+    }
+
+    public Integer getMentorId() {
+        return mentorId;
+    }
+
+    public void setMentorId(Integer mentorId) {
+        this.mentorId = mentorId;
+    }
 }

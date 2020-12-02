@@ -1,16 +1,8 @@
 package com.example.demo.model.dto;
 
-import com.example.demo.model.domain.Programa;
-import lombok.*;
-
-import javax.persistence.Entity;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
 public class ProgramaDTO {
 
     private Integer id;
@@ -25,4 +17,35 @@ public class ProgramaDTO {
     @NotNull
     private Integer anoFim;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Integer getAnoInicio() {
+        return anoInicio;
+    }
+
+    public void setAnoInicio(Integer anoInicio) {
+        this.anoInicio = anoInicio;
+    }
+
+    public Integer getAnoFim() {
+        return anoFim;
+    }
+
+    public void setAnoFim(Integer anoFim) {
+        this.anoFim = anoFim;
+    }
 }

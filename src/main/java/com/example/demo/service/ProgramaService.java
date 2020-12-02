@@ -4,7 +4,6 @@ import com.example.demo.model.domain.Programa;
 import com.example.demo.model.dto.ProgramaDTO;
 import com.example.demo.model.mapper.ProgramaMapper;
 import com.example.demo.repository.ProgramaRepository;
-import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,7 +50,7 @@ public class ProgramaService {
                 .map(toProgramaDTO);
     }
 
-    public Optional<ProgramaDTO> cria(@NonNull ProgramaDTO programaDTO) {
+    public Optional<ProgramaDTO> cria(ProgramaDTO programaDTO) {
         return Optional.of(programaRepository.save(programaMapper.toDomain(programaDTO)))
                 .map(toProgramaDTO);
     }

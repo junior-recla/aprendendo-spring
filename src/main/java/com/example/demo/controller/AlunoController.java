@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.model.dto.AlunoDTO;
 import com.example.demo.service.AlunoService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(AlunoController.HOME)
+//@Api(value="API REST Alunos")
 public class AlunoController {
 
     public final static String HOME = "/aluno";
@@ -30,11 +33,13 @@ public class AlunoController {
     private AlunoService alunoService;
 
     @GetMapping
+    @ApiOperation(value="Retorna uma lista contendo todos alunos")
     public ResponseEntity<List<AlunoDTO>> list() {
         return new ResponseEntity<>(alunoService.list(), ACCEPTED);
     }
 
     @GetMapping("/{id}")
+    @ApiOperation(value="Retorna um único aluno pelo ID")
     public ResponseEntity<AlunoDTO> get(@PathVariable Integer id) {
         return alunoService
                 .getByIndex(id)
@@ -43,6 +48,7 @@ public class AlunoController {
     }
 
     @PostMapping
+    @ApiOperation(value="Cadastra um aluno")
     public ResponseEntity<AlunoDTO> cria(@RequestBody @Validated AlunoDTO alunoDTO) {
         return alunoService
                 .cria(alunoDTO)
@@ -51,6 +57,7 @@ public class AlunoController {
     }
 
     @DeleteMapping("/{id}")
+    @ApiOperation(value="Deleta um aluno")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         AlunoDTO alunoDTO = alunoService.delete(id);
         return ResponseEntity.status(ACCEPTED).body(alunoDTO);
@@ -58,6 +65,7 @@ public class AlunoController {
     }
 
     @PutMapping("/{id}")
+    @ApiOperation(value="Atualiza os dados de uma aluno")
     public ResponseEntity<?> update(@PathVariable Integer id,
                                     @RequestBody @Validated AlunoDTO alunoDTO) {
         alunoDTO.setId(id);

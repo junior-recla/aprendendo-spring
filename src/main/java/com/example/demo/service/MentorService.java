@@ -1,13 +1,9 @@
 package com.example.demo.service;
 
-
-import com.example.demo.model.domain.Aluno;
 import com.example.demo.model.domain.Mentor;
-import com.example.demo.model.dto.AlunoDTO;
 import com.example.demo.model.dto.MentorDTO;
 import com.example.demo.model.mapper.MentorMapper;
 import com.example.demo.repository.MentorRepository;
-import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +30,7 @@ public class MentorService {
         return mentorRepository.existsByIdAndAtivo(id, ATIVO);
     }
 
-    public List<MentorDTO> list(){
+    public List<MentorDTO> list() {
         return mentorRepository
                 .findAllByAtivo(Boolean.TRUE)
                 .stream()
@@ -53,14 +49,14 @@ public class MentorService {
                 .map(toMentorDTO);
     }
 
-    public boolean delete(Integer id){
+    public boolean delete(Integer id) {
         //TODO ao apagar o mentor, apagar tmb as mentorias relacionadas
         boolean mentorExiste = mentorAtivoExiste(id);
         if (mentorExiste) mentorRepository.deleteLogicamente(id);
         return mentorExiste;
     }
 
-    public boolean update(Integer id, MentorDTO mentorDTO){
+    public boolean update(Integer id, MentorDTO mentorDTO) {
         boolean mentorExiste = mentorAtivoExiste(id);
         if (mentorExiste) cria(mentorDTO);
         return mentorExiste;
