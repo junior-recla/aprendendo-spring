@@ -28,7 +28,7 @@ public class MentoriaService {
 
     private final Boolean ATIVO = Boolean.TRUE;
 
-    private final Function<Mentoria, MentoriaDTO> toMentoriaDTO = m -> mentoriaMapper.toDTORelacionado(m);
+    private final Function<Mentoria, MentoriaDTO> toMentoriaDTO = m -> mentoriaMapper.toDTO(m);
 
     private boolean mentoriaAtivoExiste(Integer id) {
         return mentoriaRepository.existsByIdAndAtivo(id, ATIVO);

@@ -9,20 +9,11 @@ import org.mapstruct.Mapping;
 public interface AlunoMapper {
 
     //AlunoMaaper INSTANCE = Mappers.getMapper(AlunoMaaper.class);
-
-    @Mapping(target = "programaId", ignore = true)
+    @Mapping(target = "programaId", source = "programa.id")
     AlunoDTO toDTO(Aluno aluno);
 
     @Mapping(target = "ativo", ignore = true)
-    @Mapping(target = "programa", ignore = true)
+    @Mapping(target = "programa.id", source = "programaId")
     Aluno toDomain(AlunoDTO alunoDTO);
-
-    default AlunoDTO toDTORelacionado(Aluno aluno) {
-        AlunoDTO alunoDTO = toDTO(aluno);
-
-        alunoDTO.setProgramaId(aluno.getPrograma().getId());
-
-        return alunoDTO;
-    }
 
 }

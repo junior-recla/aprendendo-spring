@@ -7,6 +7,9 @@ import com.example.demo.model.dto.AlunoDTO;
 import com.example.demo.model.mapper.AlunoMapper;
 import com.example.demo.repository.AlunoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,14 +32,12 @@ public class AlunoService {
 
     private final Boolean ATIVO = Boolean.TRUE;
 
-    private final Function<Aluno, AlunoDTO> toAlunoDTO = a -> alunoMapper.toDTORelacionado(a);
+    private final Function<Aluno, AlunoDTO> toAlunoDTO = a -> alunoMapper.toDTO(a);
 
-    public List<AlunoDTO> list() {
-        return alunoRepository
-                .findAllByAtivo(ATIVO)
-                .stream()
-                .map(toAlunoDTO)
-                .collect(toList());
+    public Page<AlunoDTO> page(Pageable pageable) {
+        Page<Aluno> page = alunoRepository.findAllByAtivo(pageable, ATIVO);
+        alunoRepository.findAllAlunoAtivoEProgramas(page.stream().collect(toList()));
+        return page.map(toAlunoDTO);
     }
 
     public Optional<AlunoDTO> getByIndex(Integer id) {

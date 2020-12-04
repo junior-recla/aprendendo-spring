@@ -1,11 +1,14 @@
 package com.example.demo.model.dto;
 
+import io.swagger.annotations.ApiModel;
+
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
+@ApiModel(value = "Aluno", description = "Model (DTO) representação de aluno")
 public class AlunoDTO {
     //https://www.baeldung.com/javax-validation
 

@@ -8,21 +8,13 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface MentoriaMapper {
 
-    @Mapping(target = "mentorId", ignore = true)
-    @Mapping(target = "alunoId", ignore = true)
+    @Mapping(target = "mentorId", source = "mentor.id")
+    @Mapping(target = "alunoId", source = "aluno.id")
     MentoriaDTO toDTO(Mentoria mentoria);
 
-    @Mapping(target = "mentor", ignore = true)
-    @Mapping(target = "aluno", ignore = true)
+    @Mapping(target = "mentor.id", source = "mentorId")
+    @Mapping(target = "aluno.id", source = "alunoId")
     @Mapping(target = "ativo", ignore = true)
     Mentoria toDomain(MentoriaDTO mentoriaDTO);
 
-    default MentoriaDTO toDTORelacionado(Mentoria mentoria){
-        MentoriaDTO mentoriaDTO = toDTO(mentoria);
-
-        mentoriaDTO.setAlunoId(mentoria.getAluno().getId());
-        mentoriaDTO.setMentorId(mentoria.getMentor().getId());
-
-        return mentoriaDTO;
-    }
 }
