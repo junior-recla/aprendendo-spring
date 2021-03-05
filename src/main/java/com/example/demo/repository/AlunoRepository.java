@@ -33,7 +33,6 @@ public interface AlunoRepository extends JpaRepository<Aluno, Integer> {
 
     @Transactional
     @Modifying
-    /*@Param("id") :id*/
     @Query("UPDATE Aluno SET ativo = 0 WHERE id = ?1")
     void deleteLogicamente(Integer id);
 

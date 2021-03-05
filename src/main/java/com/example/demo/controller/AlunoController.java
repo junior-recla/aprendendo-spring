@@ -2,9 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.dto.AlunoDTO;
 import com.example.demo.service.AlunoService;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

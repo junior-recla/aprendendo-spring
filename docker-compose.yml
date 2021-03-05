@@ -1,0 +1,19 @@
+version: '3.1'
+services:
+  db:
+    image: mysql:8.0.21
+    container_name: mysql-compose
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      #MYSQL_DATABASE: database name
+      #MYSQL_USER: user name
+      #MYSQL_PASSWORD: user password
+    ports:
+      - "3306:3306"
+    volumes:
+      - escola_data:/var/lib/mysql
+
+#isso ak pode estar em cima do services
+volumes:
+  escola_data:
+#indicam que nosso serviço utilizará o volume que criamos para a pasta /var/lib/mysql para a persistência dos dados entre containers.
